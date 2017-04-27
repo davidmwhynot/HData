@@ -16,6 +16,7 @@ public class HSQL {
 	String rarityDetReturnString;
 	String raceDetReturnString;
 	String ahDetReturnString;
+	private static String connectionURL = "jdbc:mysql://localhost:3306/hdata?useSSL=false";
 	int xCreateCardDB;
 	int checkIfUserPassExistsx;
 	boolean checkIfUserPassExistsz;
@@ -34,7 +35,7 @@ public class HSQL {
 	public int ReturnNumCards(String numCardsQuery) {
 		try
 		(
-			Connection connReturnNumCards = DriverManager.getConnection("jdbc:mysql://localhost:3306/hdata", "david", "delaney");
+			Connection connReturnNumCards = DriverManager.getConnection(connectionURL, "david", "delaney");
 			Statement stmtReturnNumCards = connReturnNumCards.createStatement();
 		) {
 	//		ResultSet rsetReturnNumCardsByMana = stmtReturnNumCardsByMana.executeQuery("select * from cards where cost = " + manaCost);
@@ -49,7 +50,7 @@ public class HSQL {
 	public int MatchReturnYourClass(int mID, String user) {
 		try
 		(
-			Connection connMatchReturnYourClass = DriverManager.getConnection("jdbc:mysql://localhost:3306/hdata", "david", "delaney");
+			Connection connMatchReturnYourClass = DriverManager.getConnection(connectionURL, "david", "delaney");
 			Statement stmtMatchReturnYourClass = connMatchReturnYourClass.createStatement();
 		) {
 			int mIDSub = mID - 1;
@@ -65,7 +66,7 @@ public class HSQL {
 	public int MatchReturnVsClass(int mID, String user) {
 		try
 		(
-			Connection connMatchReturnVsClass = DriverManager.getConnection("jdbc:mysql://localhost:3306/hdata", "david", "delaney");
+			Connection connMatchReturnVsClass = DriverManager.getConnection(connectionURL, "david", "delaney");
 			Statement stmtMatchReturnVsClass = connMatchReturnVsClass.createStatement();
 		) {
 			int mIDSub = mID - 1;
@@ -81,7 +82,7 @@ public class HSQL {
 	public int MatchReturnWL(int mID, String user) {
 		try
 		(
-			Connection connMatchReturnWL = DriverManager.getConnection("jdbc:mysql://localhost:3306/hdata", "david", "delaney");
+			Connection connMatchReturnWL = DriverManager.getConnection(connectionURL, "david", "delaney");
 			Statement stmtMatchReturnWL = connMatchReturnWL.createStatement();
 		) {
 			int mIDSub = mID - 1;
@@ -97,7 +98,7 @@ public class HSQL {
 	public int MatchReturnGameType(int mID, String user) {
 		try
 		(
-			Connection connMatchReturnGameType = DriverManager.getConnection("jdbc:mysql://localhost:3306/hdata", "david", "delaney");
+			Connection connMatchReturnGameType = DriverManager.getConnection(connectionURL, "david", "delaney");
 			Statement stmtMatchReturnGameType = connMatchReturnGameType.createStatement();
 		) {
 			int mIDSub = mID - 1;
@@ -115,7 +116,7 @@ public class HSQL {
 	public int GetNumberRecentMatches(String userGetNumberRecentMatches) {
 		try
 		(
-			Connection connGetNumberRecentMatches = DriverManager.getConnection("jdbc:mysql://localhost:3306/hdata", "david", "delaney");
+			Connection connGetNumberRecentMatches = DriverManager.getConnection(connectionURL, "david", "delaney");
 			Statement stmtGetNumberRecentMatches = connGetNumberRecentMatches.createStatement();
 		) {
 			ResultSet rsetGetNumberRecentMatches = stmtGetNumberRecentMatches.executeQuery("select * from " + userGetNumberRecentMatches + "matchHistory");
@@ -130,7 +131,7 @@ public class HSQL {
 	public void InitDatabase() { // THIS CAN PROBABLY BE REMOVED
 		try
 		(
-			Connection connInitDatabase = DriverManager.getConnection("jdbc:mysql://localhost:3306/hdata", "david", "delaney");
+			Connection connInitDatabase = DriverManager.getConnection(connectionURL, "david", "delaney");
 			Statement stmtInitDatabase = connInitDatabase.createStatement();
 		) {
 			stmtInitDatabase.executeUpdate("create table if not exists userpass (user varchar(20), pass varchar(20))");
@@ -142,7 +143,7 @@ public class HSQL {
 	public void InitUserpass() {
 		try
 		(
-			Connection connInitDatabase = DriverManager.getConnection("jdbc:mysql://localhost:3306/hdata", "david", "delaney");
+			Connection connInitDatabase = DriverManager.getConnection(connectionURL, "david", "delaney");
 			Statement stmtInitDatabase = connInitDatabase.createStatement();
 		) {
 			stmtInitDatabase.executeUpdate("create table if not exists userpass (user varchar(20), pass varchar(20))");
@@ -154,7 +155,7 @@ public class HSQL {
 	public void InitMatchHistory(String userInitMatchHistory) {
 		try
 		(
-			Connection connInitMatchHistory = DriverManager.getConnection("jdbc:mysql://localhost:3306/hdata", "david", "delaney");
+			Connection connInitMatchHistory = DriverManager.getConnection(connectionURL, "david", "delaney");
 			Statement stmtInitMatchHistory = connInitMatchHistory.createStatement();
 		) {
 			// keep in mind that these commands ARE NOT EXECUTED HERE
@@ -195,7 +196,7 @@ public class HSQL {
 	public double getWins(String userGetWins, int classNumGetWins) {
 		try
 		(
-			Connection connGetWins = DriverManager.getConnection("jdbc:mysql://localhost:3306/hdata", "david", "delaney");
+			Connection connGetWins = DriverManager.getConnection(connectionURL, "david", "delaney");
 			Statement stmtGetWins = connGetWins.createStatement();
 		) {
 			ResultSet rsetGetWins = stmtGetWins.executeQuery("select wl from " + userGetWins + "matchHistory where wl = 0 and class = " + classNumGetWins);
@@ -210,7 +211,7 @@ public class HSQL {
 	public double getLosses(String userGetLosses, int classNumGetLosses) {
 		try
 		(
-			Connection connGetLosses = DriverManager.getConnection("jdbc:mysql://localhost:3306/hdata", "david", "delaney");
+			Connection connGetLosses = DriverManager.getConnection(connectionURL, "david", "delaney");
 			Statement stmtGetLosses = connGetLosses.createStatement();
 		) {
 			ResultSet rsetGetLosses = stmtGetLosses.executeQuery("select wl from " + userGetLosses + "matchHistory where wl = 1 and class = " + classNumGetLosses);
@@ -222,10 +223,10 @@ public class HSQL {
 		}
 		return returnLosses;
 	}
-	public static void StoreNewMatch(String storeNewMatcha) {
+	public static void StoreNewMatch(String storeNewMatcha) { // ur a fucking monkey for making the variables named like this
 		try
 		(
-			Connection connStoreNewMatch = DriverManager.getConnection("jdbc:mysql://localhost:3306/hdata", "david", "delaney");
+			Connection connStoreNewMatch = DriverManager.getConnection(connectionURL, "david", "delaney");
 			Statement stmtStoreNewMatch = connStoreNewMatch.createStatement();
 		) {
 			stmtStoreNewMatch.executeUpdate(storeNewMatcha);
@@ -238,7 +239,7 @@ public class HSQL {
 	public static void StoreUsernamePassword(String storeUsernamePassworda, String storeUsernamePasswordb) {
 		try
 		(
-			Connection connStoreUserPass = DriverManager.getConnection("jdbc:mysql://localhost:3306/hdata", "david", "delaney");
+			Connection connStoreUserPass = DriverManager.getConnection(connectionURL, "david", "delaney");
 			Statement stmtStoreUserPass = connStoreUserPass.createStatement();
 		) {
 			stmtStoreUserPass.executeUpdate("insert into userpass values('" + storeUsernamePassworda + "', '" + storeUsernamePasswordb + "')");
@@ -250,7 +251,7 @@ public class HSQL {
 	public boolean CheckIfUserExists(String checkIfUserExistsa) {
 		try
 		(
-			Connection connUserExists = DriverManager.getConnection("jdbc:mysql://localhost:3306/hdata", "david", "delaney");
+			Connection connUserExists = DriverManager.getConnection(connectionURL, "david", "delaney");
 			Statement stmtUserExists = connUserExists.createStatement();
 		) {
 			ResultSet usrExists = stmtUserExists.executeQuery("select user from userpass where user = '" + checkIfUserExistsa + "'");
@@ -270,7 +271,7 @@ public class HSQL {
 	public boolean CheckIfUserPassExists(String checkIfUserPassExistsa, String checkIfUserPassExistsb) {
 		try
 		(
-			Connection connUserPassExists = DriverManager.getConnection("jdbc:mysql://localhost:3306/hdata", "david", "delaney");
+			Connection connUserPassExists = DriverManager.getConnection(connectionURL, "david", "delaney");
 			Statement stmtUserPassExists = connUserPassExists.createStatement();
 		) {
 			ResultSet usrPassExists = stmtUserPassExists.executeQuery("select user, pass from userpass where user = '" + checkIfUserPassExistsa + "' and pass = '" + checkIfUserPassExistsb + "'");
@@ -290,7 +291,7 @@ public class HSQL {
 		String[][] tempGetCardsArray = new String[numCards][9];
 		try
 		(
-			Connection connGetCards = DriverManager.getConnection("jdbc:mysql://localhost:3306/hdata", "david", "delaney");
+			Connection connGetCards = DriverManager.getConnection(connectionURL, "david", "delaney");
 			Statement stmtGetCards = connGetCards.createStatement();
 		) {
 			ResultSet rsetGetCards = stmtGetCards.executeQuery(cardParams);
@@ -314,7 +315,7 @@ public class HSQL {
 	public void createCardDB() {
 		try
 		(
-			Connection connCreateCardDB = DriverManager.getConnection("jdbc:mysql://localhost:3306/hdata", "david", "delaney");
+			Connection connCreateCardDB = DriverManager.getConnection(connectionURL, "david", "delaney");
 			Statement stmtCreateCardDB = connCreateCardDB.createStatement();
 		) {
 			// This creates the table, then the query tests to see if the card table has already been created on this machine or not (the table only needs to be created once)
@@ -780,14 +781,14 @@ public class HSQL {
 			classDetReturnString = "Priest";
 		return classDetReturnString;
 	}
-	private String ahDet(int ahInt) {
+	private String ahDet(int ahInt) { // what is ah??
 		if(ahInt == -1)
 			ahDetReturnString = "n/a";
 		else
 			ahDetReturnString = "" + ahInt;
 		return ahDetReturnString;
 	}
-	private String typeDet(int typeInt) {
+	private String typeDet(int typeInt) { // redefine type
 		if(typeInt == 0)
 			typeDetReturnString = "Minion";
 		if(typeInt == 1)

@@ -17,38 +17,38 @@ public class LoginFrame extends JFrame implements MouseListener {
 	BevelBorder borderUp = new BevelBorder(1, Color.darkGray, Color.lightGray); // what the border looks like by default
 	BevelBorder borderDown = new BevelBorder(0, Color.darkGray, Color.lightGray); // what the border looks like when you hover over it
 	public LoginFrame() {
-		super("HData");
+		super("HData"); // figure out what this is calling by looking at extends and implements in the class declaration
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Container con = getContentPane();
-		con.setLayout(new FlowLayout());
+		Container con = getContentPane(); // the background to put all the ui elements on top of
+		con.setLayout(new FlowLayout()); // flowin the shit out of this bitch
 		con.add(userLogin);
 		con.add(inputUserLogin);
 		con.add(passLogin);
 		con.add(inputPassLogin);
 		con.add(loginButton);
-		loginButton.add(loginButtonText);
+		loginButton.add(loginButtonText); // addin sum buttons bitch
 		loginButton.setBorder(borderUp);
-		con.add(newProfile);
+		con.add(newProfile); // important button here
 		newProfile.setBorder(borderUp);
 		newProfile.add(newProfileLabel);
 		newProfile.addMouseListener(this);
 		loginButton.addMouseListener(this);
 	}
-	public void mouseEntered(MouseEvent e) {
+	public void mouseEntered(MouseEvent e) { // sets borders down when mouse enters buttons (all buttons that we want to react to mouse hover should be present)
 		Object source = e.getSource();
 		if(source == newProfile)
 			newProfile.setBorder(borderDown);
 		if(source == loginButton)
 			loginButton.setBorder(borderDown);
 	}
-	public void mouseExited(MouseEvent e) {
+	public void mouseExited(MouseEvent e) { // sets borders up
 		Object source = e.getSource();
 		if(source == newProfile)
 			newProfile.setBorder(borderUp);
 		if(source == loginButton)
 			loginButton.setBorder(borderUp);
 	}
-	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) { // what happens when user clicks certain buttons or anywhere
 		Object source = e.getSource();
 		if(source == newProfile) {
 			NewProfileFrame newP = new NewProfileFrame(); // create NewProfileFrame from class NewProfileFrame

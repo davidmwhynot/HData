@@ -54,7 +54,7 @@ public class MainFrame extends JFrame implements MouseListener {
 	JPanel bestDecksPanel = new JPanel();
 	BevelBorder borderUp = new BevelBorder(1, Color.darkGray, Color.lightGray); // what the border looks like by default
 	BevelBorder borderDown = new BevelBorder(0, Color.darkGray, Color.lightGray); // what the border looks like when you hover over it
-	public MainFrame(String userToMain) {
+	public MainFrame(String userToMain) { // nice trick I did because i BELEIEVE there were some scope issues in passsing the username from the loginframe to the mainframe??? maybe??? idk where userToMain originates (should probably figure that out)
 		super("HData");
 		user = userToMain;
 		HSQL starting = new HSQL();
@@ -90,13 +90,13 @@ public class MainFrame extends JFrame implements MouseListener {
 						nav.add(newDeck);
 						nav.add(stats);
 						nav.add(cardsSearch);
-				HSQL rcnt = new HSQL();
+				HSQL rcnt = new HSQL(); // we have to reinitiate the object? does this cause thread issues? is the old object gotten rid of? answer these questions and then delete this (and all comments like this)
 				rcntMatch = rcnt.GetNumberRecentMatches(user);
 				if(rcntMatch == 0) {
 					recentPanel.add(noMatches);
 				}
 				if(rcntMatch == 1) {
-					HSQL mOneObj = new HSQL();
+					HSQL mOneObj = new HSQL(); // why do we need new object here?? think it has something to do with the multi dimensional call and how it changes for each number of matches < 5 
 					String mOneYourClass = classDet(mOneObj.MatchReturnYourClass(rcntMatch, user));
 					String mOneVsClass = classDet(mOneObj.MatchReturnVsClass(rcntMatch, user));
 					String mOneResult = "";
