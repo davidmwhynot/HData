@@ -54,7 +54,7 @@ public class MainFrame extends JFrame implements MouseListener {
 	JPanel bestDecksPanel = new JPanel();
 	BevelBorder borderUp = new BevelBorder(1, Color.darkGray, Color.lightGray); // what the border looks like by default
 	BevelBorder borderDown = new BevelBorder(0, Color.darkGray, Color.lightGray); // what the border looks like when you hover over it
-	public MainFrame(String userToMain) { // nice trick I did because i BELEIEVE there were some scope issues in passsing the username from the loginframe to the mainframe??? maybe??? idk where userToMain originates (should probably figure that out)
+	public MainFrame(String userToMain) { // userToMain comes from loginframe or whatever frame was calling it . it is what we are naming the variable for when you call any frame to pass the username from the initial one supplied in the loginframe
 		super("HData");
 		user = userToMain;
 		HSQL starting = new HSQL();

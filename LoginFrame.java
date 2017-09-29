@@ -17,7 +17,7 @@ public class LoginFrame extends JFrame implements MouseListener {
 	BevelBorder borderUp = new BevelBorder(1, Color.darkGray, Color.lightGray); // what the border looks like by default
 	BevelBorder borderDown = new BevelBorder(0, Color.darkGray, Color.lightGray); // what the border looks like when you hover over it
 	public LoginFrame() {
-		super("HData"); // figure out what this is calling by looking at extends and implements in the class declaration
+		super("HData"); // makes the title of the window 'HData'
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container con = getContentPane(); // the background to put all the ui elements on top of
 		con.setLayout(new FlowLayout()); // flowin the shit out of this bitch

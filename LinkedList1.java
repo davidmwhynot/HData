@@ -20,7 +20,7 @@ public class LinkedList1 {
 		else {
 			last.next = new Node(name);
 			last = last.next;
-		}	
+		}
 	}
 	public void display() {
 		Node it = first;

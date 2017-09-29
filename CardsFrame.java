@@ -12,6 +12,7 @@ public class CardsFrame extends JFrame implements MouseListener {
 	String manaStr = "";
 	String searchQuery;
 	String searchNumQuery;
+	int resultCount = 0;
 	int firstHold = 0;
 	int typeInt;
 	int arrayCounter = 0;
@@ -39,7 +40,9 @@ public class CardsFrame extends JFrame implements MouseListener {
 	JLabel healthLbl = new JLabel("Health: ");
 	JLabel rarityLbl = new JLabel("Rarity: ");
 	JLabel raceLbl = new JLabel("Race: ");
+	JLabel classLbl = new JLabel("Class: ");
 	JLabel searchLbl = new JLabel("Search");
+	JLabel clearFrameLbl = new JLabel("Clear");
 	JLabel resultsLbl = new JLabel("Results");
 	JPanel resultsPanel = new JPanel();
 	// Labels for result categories
@@ -56,9 +59,11 @@ public class CardsFrame extends JFrame implements MouseListener {
 	String[] rarityArray = {"Any","Basic","Common","Rare","Epic","Legendary"};
 	String[] raceArray = {"Any","Beast","Totem","Demon","Pirate","Murloc","Dragon"};
 	String[] typeArray = {"Any","Minion","Spell","Weapon","Secret"};
+	String[] classArray = {"Any","Warrior","Shaman","Rogue","Paladin","Hunter","Druid","Warlock","Mage","Priest"};
 	JComboBox<String> rarityDrop = new JComboBox<>(rarityArray);
 	JComboBox<String> raceDrop = new JComboBox<>(raceArray);
 	JComboBox<String> typeDrop = new JComboBox<>(typeArray);
+	JComboBox<String> classDrop = new JComboBox<>(classArray);
 	JTextField nameField = new JTextField(15);
 	JTextField textField = new JTextField(15);
 	JTextField manaField = new JTextField(2);
@@ -126,9 +131,12 @@ public class CardsFrame extends JFrame implements MouseListener {
 							paramsMidPanel.add(raceDrop);
 						paramsMidPanel.add(rarityLbl);
 							paramsMidPanel.add(rarityDrop);
+						paramsMidPanel.add(classLbl);
+							paramsMidPanel.add(classDrop);
 					paramsPanel.add(paramsBotPanel, BorderLayout.SOUTH);
 						paramsBotPanel.setLayout(new FlowLayout());
 						paramsBotPanel.add(searchLbl);
+						paramsBotPanel.add(clearFrameLbl);
 				bodyPanel.add(resultsLbl);
 					resultsLbl.setPreferredSize(new Dimension(925, 40));
 					resultsLbl.setFont(headerFont);
@@ -170,6 +178,7 @@ public class CardsFrame extends JFrame implements MouseListener {
 		newDeck.setBorder(borderUp);
 		overview.setBorder(borderUp);
 		searchLbl.setBorder(borderUp);
+		clearFrameLbl.setBorder(borderUp);
 		cardsSearch.setBorder(borderUp);
 		// add event listeners
 		newMatch.addMouseListener(this);
@@ -178,6 +187,7 @@ public class CardsFrame extends JFrame implements MouseListener {
 		newDeck.addMouseListener(this);
 		overview.addMouseListener(this);
 		searchLbl.addMouseListener(this);
+		clearFrameLbl.addMouseListener(this);
 		cardsSearch.addMouseListener(this);
 	}
 	public void mouseEntered(MouseEvent e) {
@@ -195,6 +205,8 @@ public class CardsFrame extends JFrame implements MouseListener {
 			newDeck.setBorder(borderDown);
 		if(source == searchLbl)
 			searchLbl.setBorder(borderDown);
+		if(source == clearFrameLbl)
+			clearFrameLbl.setBorder(borderDown);
 		if(source == cardsSearch)
 			cardsSearch.setBorder(borderDown);
 	}
@@ -213,6 +225,8 @@ public class CardsFrame extends JFrame implements MouseListener {
 			newDeck.setBorder(borderUp);
 		if(source == searchLbl)
 			searchLbl.setBorder(borderUp);
+		if(source == clearFrameLbl)
+			clearFrameLbl.setBorder(borderUp);
 		if(source == cardsSearch)
 			cardsSearch.setBorder(borderUp);
 	}
@@ -271,6 +285,9 @@ public class CardsFrame extends JFrame implements MouseListener {
 		if(source == cardsSearch) {
 			System.out.println("cardsSearch");
 		}
+		if(source == clearFrameLbl) {
+			System.out.println("clear");
+		}
 		if(source == searchLbl) {
 			System.out.println("Search");
 			// remove the previous results before displaying the new ones
@@ -327,6 +344,20 @@ public class CardsFrame extends JFrame implements MouseListener {
 				else {
 					addQueryRarity = addQueryRarity + rarityInt;
 					searchQuery = searchQuery + addQueryRarity;
+					notFirst = true;
+				}
+			}
+			int classInt = classDrop.getSelectedIndex();
+			--classInt;
+			String addQueryClass = "class = ";
+			if(!(classInt == -1)) {
+				if(notFirst) {
+					addQueryClass = addQueryClass + classInt;
+					searchQuery = searchQuery + " and " + addQueryClass;
+				}
+				else {
+					addQueryClass = addQueryClass + classInt;
+					searchQuery = searchQuery + addQueryClass;
 					notFirst = true;
 				}
 			}
@@ -396,10 +427,10 @@ public class CardsFrame extends JFrame implements MouseListener {
 			// HSQL is no longer constructing the query, we must construct it here
 			if(!(cardCounter == 0)) {
 				HSQL getCards = new HSQL();
-				String[][] tempArray = getCards.GetCards(searchQuery, cardCounter);
+				String[][] tempArray = getCards.GetCards(searchQuery, cardCounter); // putting results in a temporary array of unspecified size
 				for(int k = 0; k < cardCounter; ++k)
 					for(int v = 0; v < 9; ++v)
-						resultStrings[k][v] = tempArray[k][v];
+						resultStrings[k][v] = tempArray[k][v]; // we are taking the results from the temp array and putting them into the array that we can pull from to diplay
 			}
 			for(int i = 0; i < cardCounter; i++) {
 				resultLbls[i][0] = new JLabel("<html>" + resultStrings[i][0] + "</html>");
@@ -413,7 +444,7 @@ public class CardsFrame extends JFrame implements MouseListener {
 				resultLbls[i][8] = new JLabel("<html>" + resultStrings[i][8] + "</html>");
 			}
 			for(int a = 0; a < cardCounter; ++a) {
-				checker = resultLbls[a][0].getText();
+				checker = resultLbls[a][0].getText(); // wtf are u doing here????? need to understand how the array that is returned by the query is structured. structured based on my database right?
 				if(!checker.equals("<html></html>")) {
 					resultsPanel.add(resultLbls[a][0]);
 					resultLbls[a][0].setPreferredSize(new Dimension(175,50));
@@ -474,5 +505,11 @@ public class CardsFrame extends JFrame implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 	}
 	public void mouseReleased(MouseEvent e) {
+	}
+	public void setLastQueryResultCount(int lastQueryResultCount) {
+		resultCount = lastQueryResultCount;
+	}
+	public int getLastQueryResultCount() {
+		return resultCount;
 	}
 }

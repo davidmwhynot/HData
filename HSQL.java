@@ -1,5 +1,7 @@
 // David Whynot 7.15.14 www.xdavesbanex.com
 // "TONS OF SQL" ~ David 'Phreak' Turly (modified)
+// It is good practice to remember that if we are going to use the same query in multiple places to have a method here for it
+// but if we are only going to be using a query in one area of the program we should have a default query method and use that
 // lines to port:
 // line 181 - this section sets up the recent matches and creates the table that we store the matches in based on the username
 // basically every user has their own unique table and within that table are their matches and decks and any other info we want to store about them
@@ -16,7 +18,9 @@ public class HSQL {
 	String rarityDetReturnString;
 	String raceDetReturnString;
 	String ahDetReturnString;
-	private static String connectionURL = "jdbc:mysql://localhost:3306/hdata?useSSL=false";
+	private static String connectionURL = "jdbc:mysql://localhost:3306/hdata?useSSL=false"; // need to worry about securely communicating with the server
+	private static String connectionUser = "root";
+	private static String connectionPw = "";
 	int xCreateCardDB;
 	int checkIfUserPassExistsx;
 	boolean checkIfUserPassExistsz;
@@ -35,7 +39,7 @@ public class HSQL {
 	public int ReturnNumCards(String numCardsQuery) {
 		try
 		(
-			Connection connReturnNumCards = DriverManager.getConnection(connectionURL, "david", "delaney");
+			Connection connReturnNumCards = DriverManager.getConnection(connectionURL, connectionUser, connectionPw);
 			Statement stmtReturnNumCards = connReturnNumCards.createStatement();
 		) {
 	//		ResultSet rsetReturnNumCardsByMana = stmtReturnNumCardsByMana.executeQuery("select * from cards where cost = " + manaCost);
@@ -50,7 +54,7 @@ public class HSQL {
 	public int MatchReturnYourClass(int mID, String user) {
 		try
 		(
-			Connection connMatchReturnYourClass = DriverManager.getConnection(connectionURL, "david", "delaney");
+			Connection connMatchReturnYourClass = DriverManager.getConnection(connectionURL, connectionUser, connectionPw);
 			Statement stmtMatchReturnYourClass = connMatchReturnYourClass.createStatement();
 		) {
 			int mIDSub = mID - 1;
@@ -66,7 +70,7 @@ public class HSQL {
 	public int MatchReturnVsClass(int mID, String user) {
 		try
 		(
-			Connection connMatchReturnVsClass = DriverManager.getConnection(connectionURL, "david", "delaney");
+			Connection connMatchReturnVsClass = DriverManager.getConnection(connectionURL, connectionUser, connectionPw);
 			Statement stmtMatchReturnVsClass = connMatchReturnVsClass.createStatement();
 		) {
 			int mIDSub = mID - 1;
@@ -82,7 +86,7 @@ public class HSQL {
 	public int MatchReturnWL(int mID, String user) {
 		try
 		(
-			Connection connMatchReturnWL = DriverManager.getConnection(connectionURL, "david", "delaney");
+			Connection connMatchReturnWL = DriverManager.getConnection(connectionURL, connectionUser, connectionPw);
 			Statement stmtMatchReturnWL = connMatchReturnWL.createStatement();
 		) {
 			int mIDSub = mID - 1;
@@ -98,7 +102,7 @@ public class HSQL {
 	public int MatchReturnGameType(int mID, String user) {
 		try
 		(
-			Connection connMatchReturnGameType = DriverManager.getConnection(connectionURL, "david", "delaney");
+			Connection connMatchReturnGameType = DriverManager.getConnection(connectionURL, connectionUser, connectionPw);
 			Statement stmtMatchReturnGameType = connMatchReturnGameType.createStatement();
 		) {
 			int mIDSub = mID - 1;
@@ -116,7 +120,7 @@ public class HSQL {
 	public int GetNumberRecentMatches(String userGetNumberRecentMatches) {
 		try
 		(
-			Connection connGetNumberRecentMatches = DriverManager.getConnection(connectionURL, "david", "delaney");
+			Connection connGetNumberRecentMatches = DriverManager.getConnection(connectionURL, connectionUser, connectionPw);
 			Statement stmtGetNumberRecentMatches = connGetNumberRecentMatches.createStatement();
 		) {
 			ResultSet rsetGetNumberRecentMatches = stmtGetNumberRecentMatches.executeQuery("select * from " + userGetNumberRecentMatches + "matchHistory");
@@ -131,7 +135,7 @@ public class HSQL {
 	public void InitDatabase() { // THIS CAN PROBABLY BE REMOVED
 		try
 		(
-			Connection connInitDatabase = DriverManager.getConnection(connectionURL, "david", "delaney");
+			Connection connInitDatabase = DriverManager.getConnection(connectionURL, connectionUser, connectionPw);
 			Statement stmtInitDatabase = connInitDatabase.createStatement();
 		) {
 			stmtInitDatabase.executeUpdate("create table if not exists userpass (user varchar(20), pass varchar(20))");
@@ -143,7 +147,7 @@ public class HSQL {
 	public void InitUserpass() {
 		try
 		(
-			Connection connInitDatabase = DriverManager.getConnection(connectionURL, "david", "delaney");
+			Connection connInitDatabase = DriverManager.getConnection(connectionURL, connectionUser, connectionPw);
 			Statement stmtInitDatabase = connInitDatabase.createStatement();
 		) {
 			stmtInitDatabase.executeUpdate("create table if not exists userpass (user varchar(20), pass varchar(20))");
@@ -155,7 +159,7 @@ public class HSQL {
 	public void InitMatchHistory(String userInitMatchHistory) {
 		try
 		(
-			Connection connInitMatchHistory = DriverManager.getConnection(connectionURL, "david", "delaney");
+			Connection connInitMatchHistory = DriverManager.getConnection(connectionURL, connectionUser, connectionPw);
 			Statement stmtInitMatchHistory = connInitMatchHistory.createStatement();
 		) {
 			// keep in mind that these commands ARE NOT EXECUTED HERE
@@ -196,7 +200,7 @@ public class HSQL {
 	public double getWins(String userGetWins, int classNumGetWins) {
 		try
 		(
-			Connection connGetWins = DriverManager.getConnection(connectionURL, "david", "delaney");
+			Connection connGetWins = DriverManager.getConnection(connectionURL, connectionUser, connectionPw);
 			Statement stmtGetWins = connGetWins.createStatement();
 		) {
 			ResultSet rsetGetWins = stmtGetWins.executeQuery("select wl from " + userGetWins + "matchHistory where wl = 0 and class = " + classNumGetWins);
@@ -211,7 +215,7 @@ public class HSQL {
 	public double getLosses(String userGetLosses, int classNumGetLosses) {
 		try
 		(
-			Connection connGetLosses = DriverManager.getConnection(connectionURL, "david", "delaney");
+			Connection connGetLosses = DriverManager.getConnection(connectionURL, connectionUser, connectionPw);
 			Statement stmtGetLosses = connGetLosses.createStatement();
 		) {
 			ResultSet rsetGetLosses = stmtGetLosses.executeQuery("select wl from " + userGetLosses + "matchHistory where wl = 1 and class = " + classNumGetLosses);
@@ -226,7 +230,7 @@ public class HSQL {
 	public static void StoreNewMatch(String storeNewMatcha) { // ur a fucking monkey for making the variables named like this
 		try
 		(
-			Connection connStoreNewMatch = DriverManager.getConnection(connectionURL, "david", "delaney");
+			Connection connStoreNewMatch = DriverManager.getConnection(connectionURL, connectionUser, connectionPw);
 			Statement stmtStoreNewMatch = connStoreNewMatch.createStatement();
 		) {
 			stmtStoreNewMatch.executeUpdate(storeNewMatcha);
@@ -239,7 +243,7 @@ public class HSQL {
 	public static void StoreUsernamePassword(String storeUsernamePassworda, String storeUsernamePasswordb) {
 		try
 		(
-			Connection connStoreUserPass = DriverManager.getConnection(connectionURL, "david", "delaney");
+			Connection connStoreUserPass = DriverManager.getConnection(connectionURL, connectionUser, connectionPw);
 			Statement stmtStoreUserPass = connStoreUserPass.createStatement();
 		) {
 			stmtStoreUserPass.executeUpdate("insert into userpass values('" + storeUsernamePassworda + "', '" + storeUsernamePasswordb + "')");
@@ -251,7 +255,7 @@ public class HSQL {
 	public boolean CheckIfUserExists(String checkIfUserExistsa) {
 		try
 		(
-			Connection connUserExists = DriverManager.getConnection(connectionURL, "david", "delaney");
+			Connection connUserExists = DriverManager.getConnection(connectionURL, connectionUser, connectionPw);
 			Statement stmtUserExists = connUserExists.createStatement();
 		) {
 			ResultSet usrExists = stmtUserExists.executeQuery("select user from userpass where user = '" + checkIfUserExistsa + "'");
@@ -271,7 +275,7 @@ public class HSQL {
 	public boolean CheckIfUserPassExists(String checkIfUserPassExistsa, String checkIfUserPassExistsb) {
 		try
 		(
-			Connection connUserPassExists = DriverManager.getConnection(connectionURL, "david", "delaney");
+			Connection connUserPassExists = DriverManager.getConnection(connectionURL, connectionUser, connectionPw);
 			Statement stmtUserPassExists = connUserPassExists.createStatement();
 		) {
 			ResultSet usrPassExists = stmtUserPassExists.executeQuery("select user, pass from userpass where user = '" + checkIfUserPassExistsa + "' and pass = '" + checkIfUserPassExistsb + "'");
@@ -291,7 +295,7 @@ public class HSQL {
 		String[][] tempGetCardsArray = new String[numCards][9];
 		try
 		(
-			Connection connGetCards = DriverManager.getConnection(connectionURL, "david", "delaney");
+			Connection connGetCards = DriverManager.getConnection(connectionURL, connectionUser, connectionPw);
 			Statement stmtGetCards = connGetCards.createStatement();
 		) {
 			ResultSet rsetGetCards = stmtGetCards.executeQuery(cardParams);
@@ -315,7 +319,7 @@ public class HSQL {
 	public void createCardDB() {
 		try
 		(
-			Connection connCreateCardDB = DriverManager.getConnection(connectionURL, "david", "delaney");
+			Connection connCreateCardDB = DriverManager.getConnection(connectionURL, connectionUser, connectionPw);
 			Statement stmtCreateCardDB = connCreateCardDB.createStatement();
 		) {
 			// This creates the table, then the query tests to see if the card table has already been created on this machine or not (the table only needs to be created once)
@@ -703,7 +707,7 @@ public class HSQL {
 				stmtCreateCardDB.executeUpdate("insert into cards values('Abomination', 'Taunt. Deathrattle: Deal 2 damage to ALL characters.', 5, 0, 4, 4, 2, -1, -1, 331)");
 				stmtCreateCardDB.executeUpdate("insert into cards values('Azure Drake', 'Spell Damage +1. Battlecry: Draw a card.', 5, 0, 4, 4, 2, -1, 5, 332)");
 				stmtCreateCardDB.executeUpdate("insert into cards values('Booty Bay Bodyguard', 'Taunt', 5, 0, 5, 4, 0, -1, -1, 333)");
-				stmtCreateCardDB.executeUpdate("insert into cards values('Captain Greenskin', 'Battlecry: Give your weapon +1/+1.', 5, 0, 5, 4, 4, -1, 334)");
+				stmtCreateCardDB.executeUpdate("insert into cards values('Captain Greenskin', 'Battlecry: Give your weapon +1/+1.', 5, 0, 5, 4, 4, -1, 5, 334)");
 				stmtCreateCardDB.executeUpdate("insert into cards values('Darkscale Healer', 'Battlecry: Restore 2 Health to all friendly characters.', 5, 0, 4, 5, 0, -1, -1, 335)");
 				stmtCreateCardDB.executeUpdate("insert into cards values('Elite Tauren Chieftain', 'Battlecry: Give both players the power to ROCK! (with a Power Chord card)', 5, 0, 5, 5, 4, -1, -1, 336)");
 				stmtCreateCardDB.executeUpdate("insert into cards values('Faceless Manipulator', 'Battlecry: Choose a minion and become a copy of it.', 5, 0, 3, 3, 3, -1, -1, 337)");
